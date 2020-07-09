@@ -4,7 +4,6 @@ from vsearch import search4letters
 from DBcm import UseDatabase, ConnectionError, CredentialsError, SQLError
 from checker import check_logged_in
 
-from time import sleep
 from threading import Thread
 
 app = Flask(__name__)
@@ -46,7 +45,6 @@ def do_search() -> 'html':
 
     @copy_current_request_context
     def log_request(req: 'flask_request', res: str) -> None:
-        sleep(15)
         with UseDatabase(app.config['dbconfig']) as cursor:
             _SQL = """insert into log
                     (phrase, letters, ip, browser_string, results)
@@ -77,7 +75,7 @@ def do_search() -> 'html':
 @app.route('/entry')
 def entry_page() -> 'html':
     return render_template('entry.html',
-                           the_itle='Welcome to search4letters on the web!')
+                           the_title='Welcome to search4letters on the web!')
 
 @app.route('/login')
 def do_login() -> str:
