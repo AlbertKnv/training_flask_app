@@ -50,9 +50,13 @@ def do_search() -> 'html':
                     (phrase, letters, ip, browser_string, results)
                     values
                     (%s, %s, %s, %s, %s)"""
+            if request.headers.getlist("X-Forwarded-For"):
+                user_ip = request.headers.getlist("X-Forwarded-For")[0]
+            else:
+                user_ip = request.remote_addr
             cursor.execute(_SQL, (req.form['phrase'],
                                   req.form['letters'],
-                                  req.remote_addr,
+                                  user_ip,
                                   req.user_agent.browser,
                                   res))
 
